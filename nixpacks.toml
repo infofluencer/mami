@@ -1,0 +1,16 @@
+# Nixpacks — Next.js production (Coolify / Railway / Dokploy)
+# https://nixpacks.com/docs/configuration/file
+
+[variables]
+NIXPACKS_NODE_VERSION = "20"
+NEXT_TELEMETRY_DISABLED = "1"
+NODE_ENV = "production"
+
+[phases.install]
+cmds = ["npm ci"]
+
+[phases.build]
+cmds = ["npm run build"]
+
+[start]
+cmd = "npm run start"

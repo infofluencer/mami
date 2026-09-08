@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 300" fill="none">
+  <rect width="300" height="300" fill="#FAF6EE"/>
+  <!-- Building line art -->
+  <path d="M60 220 L60 120 L150 70 L240 120 L240 220 Z" stroke="#A67C34" stroke-width="1.5" fill="#F3EDDD" fill-opacity="0.5"/>
+  <path d="M150 70 L150 220" stroke="#B08D4C" stroke-width="0.8" opacity="0.4"/>
+  <path d="M90 160 L210 160" stroke="#B08D4C" stroke-width="0.8" opacity="0.3"/>
+  <!-- Columns -->
+  <rect x="100" y="160" width="8" height="60" fill="none" stroke="#A67C34" stroke-width="1"/>
+  <rect x="140" y="160" width="8" height="60" fill="none" stroke="#A67C34" stroke-width="1"/>
+  <rect x="180" y="160" width="8" height="60" fill="none" stroke="#A67C34" stroke-width="1"/>
+  <!-- Dome -->
+  <path d="M120 120 Q150 90 180 120" stroke="#A67C34" stroke-width="1.2" fill="none"/>
+  <!-- Trees -->
+  <circle cx="40" cy="200" r="18" fill="#C5D4BC" opacity="0.4"/>
+  <rect x="36" y="210" width="8" height="20" fill="#A67C34" opacity="0.3"/>
+  <circle cx="260" cy="195" r="16" fill="#C5D4BC" opacity="0.4"/>
+  <rect x="257" y="205" width="7" height="18" fill="#A67C34" opacity="0.3"/>
+  <!-- Ground line -->
+  <line x1="20" y1="220" x2="280" y2="220" stroke="#B08D4C" stroke-width="0.8" opacity="0.4"/>
+  <text x="150" y="270" text-anchor="middle" font-family="Georgia, serif" font-size="10" fill="#A67C34" opacity="0.45">venue.svg  dei_tirin</text>
+</svg>
