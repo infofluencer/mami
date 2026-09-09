@@ -36,6 +36,8 @@ export interface FloralAssets {
   left: string;
   bottom: string;
   bouquet: string;
+  /** Couple photo corner florals */
+  photo: string;
 }
 
 /** One decorative floral overlay — positions/sizes live in config */
@@ -190,7 +192,7 @@ export const invitationConfig: InvitationConfig = {
     rsvpHeading: "Katılımınızı Bildirin",
     rsvpSubtext:
       "Keyifli bir kutlama için hazırlanmamıza yardımcı olmak adına lütfen katılımınızı bildirin.",
-    closing: "Sizleri aramızda görmeyi umuyoruz!",
+    closing: "Sizleri görmeyi umuyoruz.",
     tapToOpen: "TAP TO OPEN",
     tapToOpenTr: "DOKUNARAK AÇIN",
     scrollDown: "Aşağı Kaydır",
@@ -240,6 +242,7 @@ export const invitationConfig: InvitationConfig = {
       left: "/floral-corner-left.webp",
       bottom: "/floral-bottom.webp",
       bouquet: "/floral-closing.webp",
+      photo: "/fotocicek.webp",
     },
   },
   tornPaperColor: "#F3EDDC",
@@ -293,22 +296,10 @@ export const invitationConfig: InvitationConfig = {
     /** Details card removed from flow */
     details: [],
     /**
-     * Closing couple photo — single full-width bottom floral strip
-     * (floral-closing.webp). No other florals.
+     * Closing couple photo florals rendered directly in Closing.tsx
+     * via assets.florals.photo (/fotocicek.webp) — full-width bottom strip.
      */
-    closing: [
-      {
-        which: "bouquet",
-        widthPercent: 100,
-        bottom: "-6%",
-        left: "50%",
-        transform: "translateX(-50%)",
-        objectFit: "contain",
-        objectPosition: "center bottom",
-        opacity: 0.98,
-        zIndex: 12,
-      },
-    ],
+    closing: [],
   },
   openTransition: {
     duration: 1.4,

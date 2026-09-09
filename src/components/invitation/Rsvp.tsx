@@ -58,7 +58,7 @@ export default function Rsvp() {
   }, [form, rsvp.endpoint]);
 
   return (
-    <section className="px-4 py-11">
+    <section className="px-4 pb-0 pt-11">
       <SectionReveal className="text-center">
         <ScriptHeading>{texts.rsvpHeading}</ScriptHeading>
         <p className="mx-auto mt-4 max-w-xs font-display text-base font-normal leading-[1.6] text-ink sm:text-[1.0625rem]">

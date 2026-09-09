@@ -19,7 +19,7 @@ interface InvitationProps {
  */
 export default function Invitation({ musicEnabled = true }: InvitationProps) {
   return (
-    <div className="relative mx-auto w-full max-w-invite overflow-x-clip bg-ivory">
+    <div className="relative mx-auto w-full max-w-invite bg-ivory">
       <Hero />
       <IntroCard />
       <Countdown />
