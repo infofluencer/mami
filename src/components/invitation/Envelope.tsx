@@ -74,7 +74,6 @@ function GlowParticles({ active }: { active: boolean }) {
 /**
  * Intro: poster → tap plays /davetiye.mp4 → near the end:
  * homepage fades in, davetiye fades out (same time).
- * Florals stay in the video / hero-bg — no overlay (avoids double flowers).
  */
 export default function Envelope({
   onOpenStart,
@@ -88,6 +87,7 @@ export default function Envelope({
   const openingRef = useRef(false);
   const revealedRef = useRef(false);
   const fadingRef = useRef(false);
+  const playWhenReadyRef = useRef(false);
 
   const { texts, assets, openTransition: ot } = invitationConfig;
   const videoSrc = assets.introVideo;
@@ -113,6 +113,7 @@ export default function Envelope({
   }, [onOpenStart, finishOpen, fadeSec]);
 
   const startGlowFallback = useCallback(() => {
+    playWhenReadyRef.current = false;
     setPhase("glow");
     if (!revealedRef.current) {
       revealedRef.current = true;
@@ -121,6 +122,18 @@ export default function Envelope({
     const ms = (reduced ? ot.reducedDuration : ot.duration) * 1000;
     doneTimer.current = setTimeout(finishOpen, ms);
   }, [reduced, ot, onOpenStart, finishOpen]);
+
+  const tryPlay = useCallback(() => {
+    const video = videoRef.current;
+    if (!video) {
+      startGlowFallback();
+      return;
+    }
+    const playPromise = video.play();
+    if (playPromise) {
+      playPromise.catch(() => startGlowFallback());
+    }
+  }, [startGlowFallback]);
 
   const handleVideoEnded = useCallback(() => {
     beginCrossfade();
@@ -133,6 +146,25 @@ export default function Envelope({
       beginCrossfade();
     }
   }, [revealAt, beginCrossfade]);
+
+  const handleCanPlay = useCallback(() => {
+    if (playWhenReadyRef.current) {
+      playWhenReadyRef.current = false;
+      tryPlay();
+    }
+  }, [tryPlay]);
+
+  // Kick off buffering as soon as the poster screen mounts
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || reduced) return;
+    try {
+      video.preload = "auto";
+      video.load();
+    } catch {
+      /* ignore */
+    }
+  }, [reduced, videoSrc]);
 
   useEffect(
     () => () => {
@@ -159,10 +191,25 @@ export default function Envelope({
 
     setPhase("playing");
 
-    video.play().catch(() => {
-      startGlowFallback();
-    });
-  }, [phase, reduced, onFirstInteraction, startGlowFallback]);
+    // HAVE_CURRENT_DATA (2+) — play now; otherwise wait for canplay
+    if (video.readyState >= 2) {
+      tryPlay();
+    } else {
+      playWhenReadyRef.current = true;
+      try {
+        video.load();
+      } catch {
+        /* ignore */
+      }
+      // Safety: don't hang forever on slow networks
+      window.setTimeout(() => {
+        if (playWhenReadyRef.current) {
+          playWhenReadyRef.current = false;
+          tryPlay();
+        }
+      }, 2500);
+    }
+  }, [phase, reduced, onFirstInteraction, startGlowFallback, tryPlay]);
 
   const handleVideoError = useCallback(() => {
     if (openingRef.current) {
@@ -211,9 +258,11 @@ export default function Envelope({
                 poster={posterSrc}
                 playsInline
                 preload="auto"
+                muted={false}
                 onEnded={handleVideoEnded}
                 onError={handleVideoError}
                 onTimeUpdate={handleTimeUpdate}
+                onCanPlay={handleCanPlay}
                 onLoadedData={() => {
                   const v = videoRef.current;
                   if (v && v.paused) {

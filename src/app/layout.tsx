@@ -7,6 +7,7 @@ const greatVibes = Great_Vibes({
   weight: "400",
   variable: "--font-great-vibes",
   display: "swap",
+  preload: true,
 });
 
 const cormorant = Cormorant_Garamond({
@@ -14,6 +15,7 @@ const cormorant = Cormorant_Garamond({
   weight: ["300", "400", "500", "600"],
   variable: "--font-cormorant",
   display: "swap",
+  preload: true,
 });
 
 export const metadata: Metadata = {
@@ -34,6 +36,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="tr" className="overflow-x-clip">
+      <head>
+        <link
+          rel="preload"
+          as="image"
+          href="/davetiye-poster.jpg"
+          fetchPriority="high"
+        />
+        <link rel="preload" as="video" href="/davetiye.mp4" type="video/mp4" />
+        <link rel="preload" as="image" href="/hero-bg.jpg" />
+      </head>
       <body
         className={`${greatVibes.variable} ${cormorant.variable} ${cormorant.className} font-body max-w-[100vw] overflow-x-clip antialiased`}
       >

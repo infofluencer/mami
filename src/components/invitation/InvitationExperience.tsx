@@ -7,12 +7,13 @@ import Invitation from "./Invitation";
 import { invitationConfig } from "@config";
 
 /**
- * Orchestrator: davetiye.mp4 plays → near the end,
- * homepage slowly fades in while davetiye slowly fades out.
+ * Orchestrator: tap → preload invitation under video → crossfade near end.
  */
 export default function InvitationExperience() {
   const [isOpen, setIsOpen] = useState(false);
   const [showContent, setShowContent] = useState(false);
+  /** Mount invitation on first tap so hero assets load during video */
+  const [prefetchContent, setPrefetchContent] = useState(false);
   const [musicEnabled, setMusicEnabled] = useState(false);
   const fadeSec = invitationConfig.openTransition.videoFadeSeconds;
 
@@ -27,19 +28,23 @@ export default function InvitationExperience() {
 
   const handleOpenStart = useCallback(() => setShowContent(true), []);
   const handleOpenComplete = useCallback(() => setIsOpen(true), []);
-  const handleFirstInteraction = useCallback(() => setMusicEnabled(true), []);
+  const handleFirstInteraction = useCallback(() => {
+    setMusicEnabled(true);
+    setPrefetchContent(true);
+  }, []);
+
+  const contentVisible = showContent || isOpen;
 
   return (
     <div className="relative mx-auto w-full max-w-[100vw] overflow-x-clip">
-      {/* Homepage under the video — fades in slowly with the crossfade */}
       <motion.div
         className={!isOpen ? "pointer-events-none" : undefined}
         aria-hidden={!isOpen}
         initial={{ opacity: 0 }}
-        animate={{ opacity: showContent || isOpen ? 1 : 0 }}
+        animate={{ opacity: contentVisible ? 1 : 0 }}
         transition={{ duration: fadeSec, ease: [0.22, 1, 0.36, 1] }}
       >
-        {(showContent || isOpen) && (
+        {(prefetchContent || contentVisible) && (
           <Invitation musicEnabled={musicEnabled} />
         )}
       </motion.div>
