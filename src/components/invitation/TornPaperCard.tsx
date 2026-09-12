@@ -13,24 +13,17 @@ interface TornPaperCardProps {
   florals?: FloralSection | false;
   /** Must match torn PNG paper cream (#F3EDDC) */
   paperColor?: string;
-  /**
-   * Intro seam mode: no floating drop-shadow, torn top tucks under the
-   * hero floral strip, tighter top padding — continuous cream flow.
-   */
-  flushTop?: boolean;
 }
 
 /**
  * Torn handmade-paper card: cream body + /torn-top.png & /torn-bottom.png deckles.
- * Strips sit above the fill and below content; body tucks under the opaque cream
- * of each PNG so transparent tears show the page (true irregular silhouette).
+ * Same structure for Intro and Schedule — floating paper with drop-shadow.
  */
 export default function TornPaperCard({
   children,
   className = "",
   florals = false,
   paperColor,
-  flushTop = false,
 }: TornPaperCardProps) {
   const { assets, tornPaperColor } = invitationConfig;
   const bg = paperColor ?? tornPaperColor;
@@ -40,18 +33,12 @@ export default function TornPaperCard({
 
   return (
     <div className="relative mx-auto w-full max-w-invite overflow-visible">
-      {florals && <SectionFlorals section={florals} className="z-[1]" />}
-
       <div
         className="relative z-10 w-full"
-        style={
-          flushTop
-            ? undefined
-            : {
-                filter:
-                  "drop-shadow(0 12px 24px rgba(92, 74, 58, 0.14)) drop-shadow(0 2px 6px rgba(92, 74, 58, 0.07))",
-              }
-        }
+        style={{
+          filter:
+            "drop-shadow(0 12px 24px rgba(92, 74, 58, 0.14)) drop-shadow(0 2px 6px rgba(92, 74, 58, 0.07))",
+        }}
       >
         {/* Top deckle */}
         <div
@@ -70,11 +57,7 @@ export default function TornPaperCard({
         </div>
 
         <div
-          className={`relative z-[1] w-full px-10 ${
-            flushTop
-              ? "pb-10 pt-6 sm:pb-12 sm:pt-7"
-              : "pb-12 pt-12 sm:pb-14 sm:pt-14"
-          } ${className}`}
+          className={`relative z-[1] w-full px-10 pb-12 pt-12 sm:pb-14 sm:pt-14 ${className}`}
           style={{ backgroundColor: bg }}
         >
           <div
@@ -87,9 +70,7 @@ export default function TornPaperCard({
           />
 
           <div
-            className={`pointer-events-none absolute inset-x-[18px] bottom-5 z-[6] border border-gold/25 sm:inset-x-[22px] sm:bottom-6 ${
-              flushTop ? "top-3 sm:top-4" : "top-5 sm:top-6"
-            }`}
+            className="pointer-events-none absolute inset-x-[18px] bottom-5 top-5 z-[6] border border-gold/25 sm:inset-x-[22px] sm:bottom-6 sm:top-6"
             aria-hidden
           />
 
@@ -112,6 +93,9 @@ export default function TornPaperCard({
           />
         </div>
       </div>
+
+      {/* Corner florals above paper + border */}
+      {florals && <SectionFlorals section={florals} className="z-30" />}
     </div>
   );
 }

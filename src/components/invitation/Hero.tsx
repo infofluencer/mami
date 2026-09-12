@@ -16,7 +16,7 @@ export default function Hero() {
   const reduced = useReducedMotion();
 
   return (
-    <section className="relative w-full overflow-visible bg-ivory">
+    <section className="relative z-20 w-full overflow-visible bg-ivory">
       <div className="relative mx-auto w-full max-w-invite aspect-[9/16] overflow-visible">
         <div className="absolute inset-0 z-0 overflow-hidden">
           <Image
@@ -27,12 +27,12 @@ export default function Hero() {
             sizes="430px"
             className="object-cover object-center"
           />
-          {/* Short cream blend into continuous paper — not a large empty band */}
+          {/* Thin blend — avoid a large empty cream band before the card */}
           <div
-            className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-[9%]"
+            className="pointer-events-none absolute inset-x-0 bottom-0 z-[2] h-[3%]"
             style={{
               background:
-                "linear-gradient(to top, #F3EDDB 0%, rgba(243,237,219,0.7) 45%, transparent 100%)",
+                "linear-gradient(to top, #F3EDDB 0%, rgba(243,237,219,0.35) 60%, transparent 100%)",
             }}
             aria-hidden
           />

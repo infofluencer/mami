@@ -262,48 +262,29 @@ export const invitationConfig: InvitationConfig = {
   },
   floralLayouts: {
     /**
-     * Swan-frame corners only (no extra bottom strip — that stacked wrong).
-     * Rendered with hero-bg, not during video transition.
+     * Large corner blooms that spill onto the intro seam and cover the gap.
      */
     hero: [
       {
         which: "left",
-        widthPercent: 43,
-        bottom: "0%",
-        left: "-2%",
-        opacity: 0.98,
+        widthPercent: 58,
+        bottom: "-18%",
+        left: "-6%",
+        opacity: 0.99,
         zIndex: 50,
       },
       {
         which: "left",
-        widthPercent: 43,
-        bottom: "0%",
-        right: "-2%",
+        widthPercent: 58,
+        bottom: "-18%",
+        right: "-6%",
         transform: "scaleX(-1)",
-        opacity: 0.98,
+        opacity: 0.99,
         zIndex: 50,
       },
     ],
-    /** Intro torn-paper card — small top-corner florals */
-    intro: [
-      {
-        which: "left",
-        widthPx: 110,
-        top: "-18px",
-        left: "-24px",
-        opacity: 0.96,
-        zIndex: 8,
-      },
-      {
-        which: "left",
-        widthPx: 110,
-        top: "-18px",
-        right: "-24px",
-        transform: "scaleX(-1)",
-        opacity: 0.96,
-        zIndex: 8,
-      },
-    ],
+    /** Seam covered by hero florals — no extra intro blooms */
+    intro: [],
     /** Details card removed from flow */
     details: [],
     /**

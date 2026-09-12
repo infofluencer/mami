@@ -8,12 +8,12 @@ export default function IntroCard() {
   const { texts } = invitationConfig;
 
   return (
-    <section className="w-full bg-ivory py-4">
+    <section className="relative z-10 -mt-12 w-full bg-transparent pb-4 pt-0 sm:-mt-14">
       <SectionReveal>
-        <TornPaperCard florals="intro">
+        <TornPaperCard>
           <div className="relative z-20 text-center">
             {texts.besmele ? (
-              <p className="mb-4 font-script text-[1.65rem] leading-snug text-gold sm:mb-5 sm:text-[1.85rem]">
+              <p className="mb-5 pt-4 font-script text-[1.65rem] leading-snug text-gold sm:mb-6 sm:pt-5 sm:text-[1.85rem]">
                 {texts.besmele}
               </p>
             ) : null}
