@@ -30,12 +30,18 @@ export interface OpenTransitionConfig {
   sealY: number;
   particles: boolean;
   envelopeWidth: number;
+  /**
+   * 0–1 progress through the intro video when the main invitation
+   * mounts underneath and starts fading in (crossfade into the page).
+   */
+  revealMainAtProgress: number;
+  /** Seconds for the video overlay to fade out after it ends */
+  videoFadeSeconds: number;
 }
 
 export interface FloralAssets {
   left: string;
   bottom: string;
-  bouquet: string;
   /** Couple photo corner florals */
   photo: string;
 }
@@ -121,9 +127,9 @@ export interface InvitationConfig {
   };
   schedule: ScheduleItem[];
   assets: {
-    /** Açılış videosu — M&B (baslangic.mp4) */
+    /** Açılış videosu */
     introVideo: string;
-    /** Video ilk kare poster — yalnızca /envelope-poster.jpg */
+    /** Video ilk kare poster */
     introPoster: string;
     heroBg: string;
     venue: string;
@@ -173,8 +179,8 @@ export const invitationConfig: InvitationConfig = {
   },
   event: {
     title: "Nişan Günü",
-    dateDisplay: "27.09.26",
-    dateISO: "2026-09-27T17:00:00+03:00",
+    dateDisplay: "03.10.26",
+    dateISO: "2026-10-03T14:00:00+03:00",
   },
   texts: {
     besmele: "Bismillahirrahmanirrahim",
@@ -211,24 +217,25 @@ export const invitationConfig: InvitationConfig = {
     rsvpSubmitting: "Gönderiliyor…",
   },
   venue: {
-    name: "Grand Garden Salon",
-    address: "Bağdat Caddesi No: 123, Kadıköy / İstanbul",
-    mapsUrl: "https://maps.google.com/?q=Grand+Garden+Salon+Kadikoy",
+    name: "Lin Davet Salonu",
+    address: "Zafer Mahallesi 185. Sk. No:19C, Esenyurt / İstanbul",
+    mapsUrl:
+      "https://www.google.com/maps?ftid=0x14caa1bc341e64b7:0x8814f94908fd0c1c",
     mapEmbedUrl:
-      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3011.650489028761!2d29.027!3d40.99!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zNDDCsDU5JzI0LjAiTiAyOcKwMDEnMzcuMiJF!5e0!3m2!1str!2str!4v1",
+      "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3009.5!2d28.6809313!3d41.0082419!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14caa1bc341e64b7%3A0x8814f94908fd0c1c!2sLin%20Davet%20Salonu!5e0!3m2!1str!2str!4v1",
   },
   schedule: [
-    { time: "17:00", event: "Karşılama" },
-    { time: "18:00", event: "Tören" },
-    { time: "19:00", event: "İkram" },
-    { time: "20:00", event: "Yemek" },
-    { time: "21:00", event: "Dans" },
+    { time: "14:00", event: "Karşılama" },
+    { time: "15:00", event: "Tören" },
+    { time: "16:00", event: "İkram" },
+    { time: "17:00", event: "Yemek" },
+    { time: "18:00", event: "Dans" },
   ],
   assets: {
-    introVideo: "/baslangic.mp4?v=mb",
-    introPoster: "/envelope-poster.jpg?v=mb",
+    introVideo: "/davetiye.mp4",
+    introPoster: "/davetiye-poster.jpg",
     heroBg: "/hero-bg.jpg",
-    venue: "/assets/venue.svg",
+    venue: "/lin_house.webp",
     couple: "/couple.jpg",
     couplePhoto: "/couple.jpg",
     music: "/assets/music.mp3",
@@ -241,7 +248,6 @@ export const invitationConfig: InvitationConfig = {
     florals: {
       left: "/floral-corner-left.webp",
       bottom: "/floral-bottom.webp",
-      bouquet: "/floral-closing.webp",
       photo: "/fotocicek.webp",
     },
   },
@@ -256,8 +262,8 @@ export const invitationConfig: InvitationConfig = {
   },
   floralLayouts: {
     /**
-     * Swan framing — symmetric corner florals only over the sides.
-     * Center water/swans stay clear. Bottom strip sits at the seam only.
+     * Swan-frame corners only (no extra bottom strip — that stacked wrong).
+     * Rendered with hero-bg, not during video transition.
      */
     hero: [
       {
@@ -277,21 +283,7 @@ export const invitationConfig: InvitationConfig = {
         opacity: 0.98,
         zIndex: 50,
       },
-      {
-        /** Thin seam bridge between corners — not a center bouquet over the swans */
-        which: "bottom",
-        widthPercent: 48,
-        heightPercent: 11,
-        bottom: "-6%",
-        left: "50%",
-        transform: "translateX(-50%)",
-        objectFit: "cover",
-        objectPosition: "center bottom",
-        opacity: 0.95,
-        zIndex: 49,
-      },
     ],
-    /** Intro — seam florals from hero spill onto the card top */
     intro: [],
     /** Details card removed from flow */
     details: [],
@@ -320,6 +312,10 @@ export const invitationConfig: InvitationConfig = {
     sealY: 0.48,
     particles: true,
     envelopeWidth: 380,
+    /** Mount main page & start crossfade near the end of the video */
+    revealMainAtProgress: 0.55,
+    /** Slow simultaneous fade: davetiye out + homepage in */
+    videoFadeSeconds: 2.2,
   },
   rsvp: {
     endpoint: "",

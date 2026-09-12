@@ -12,13 +12,14 @@ import { invitationConfig } from "@config";
 type Phase = "closed" | "playing" | "glow" | "fading" | "done";
 
 interface EnvelopeProps {
+  /** Mount main invitation under the video (start crossfade) */
   onOpenStart: () => void;
+  /** Video overlay gone — unlock scroll / full interaction */
   onOpenComplete: () => void;
   onFirstInteraction: () => void;
 }
 
 const easeOut: Transition["ease"] = [0.22, 1, 0.36, 1];
-const VIDEO_FADE_MS = 750;
 
 function GlowParticles({ active }: { active: boolean }) {
   const { glowColors } = invitationConfig.openTransition;
@@ -71,36 +72,9 @@ function GlowParticles({ active }: { active: boolean }) {
 }
 
 /**
- * Soft cream patch covering the baked-in "TAP TO OPEN" on poster + video.
- * Positioned in % of the 9:16 video frame so it tracks object-contain layout.
- */
-function IntroTextCover() {
-  const cover = invitationConfig.introTextCover;
-
-  return (
-    <div
-      aria-hidden
-      className="pointer-events-none absolute z-[15]"
-      style={{
-        left: cover.left,
-        top: cover.top,
-        width: cover.width,
-        height: cover.height,
-        background: cover.color,
-        WebkitMaskImage:
-          "radial-gradient(ellipse 68% 75% at 50% 50%, #000 28%, rgba(0,0,0,0.85) 48%, transparent 78%)",
-        maskImage:
-          "radial-gradient(ellipse 68% 75% at 50% 50%, #000 28%, rgba(0,0,0,0.85) 48%, transparent 78%)",
-        filter: "blur(5px)",
-        transform: "scale(1.15)",
-      }}
-    />
-  );
-}
-
-/**
- * Intro screen: poster → user tap plays video → onEnded fades to Invitation.
- * play() ONLY from the click handler (never useEffect / mount).
+ * Intro: poster → tap plays /davetiye.mp4 → near the end:
+ * homepage fades in, davetiye fades out (same time).
+ * Florals stay in the video / hero-bg — no overlay (avoids double flowers).
  */
 export default function Envelope({
   onOpenStart,
@@ -112,28 +86,53 @@ export default function Envelope({
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const doneTimer = useRef<ReturnType<typeof setTimeout>>();
   const openingRef = useRef(false);
+  const revealedRef = useRef(false);
+  const fadingRef = useRef(false);
 
   const { texts, assets, openTransition: ot } = invitationConfig;
   const videoSrc = assets.introVideo;
   const posterSrc = assets.introPoster;
+  const fadeSec = ot.videoFadeSeconds;
+  const revealAt = ot.revealMainAtProgress;
 
   const finishOpen = useCallback(() => {
     setPhase("done");
     onOpenComplete();
   }, [onOpenComplete]);
 
+  const beginCrossfade = useCallback(() => {
+    if (fadingRef.current) return;
+    fadingRef.current = true;
+    if (!revealedRef.current) {
+      revealedRef.current = true;
+      onOpenStart();
+    }
+    setPhase("fading");
+    if (doneTimer.current) clearTimeout(doneTimer.current);
+    doneTimer.current = setTimeout(finishOpen, fadeSec * 1000);
+  }, [onOpenStart, finishOpen, fadeSec]);
+
   const startGlowFallback = useCallback(() => {
     setPhase("glow");
-    onOpenStart();
+    if (!revealedRef.current) {
+      revealedRef.current = true;
+      onOpenStart();
+    }
     const ms = (reduced ? ot.reducedDuration : ot.duration) * 1000;
     doneTimer.current = setTimeout(finishOpen, ms);
   }, [reduced, ot, onOpenStart, finishOpen]);
 
   const handleVideoEnded = useCallback(() => {
-    setPhase("fading");
-    onOpenStart();
-    doneTimer.current = setTimeout(finishOpen, VIDEO_FADE_MS);
-  }, [onOpenStart, finishOpen]);
+    beginCrossfade();
+  }, [beginCrossfade]);
+
+  const handleTimeUpdate = useCallback(() => {
+    const video = videoRef.current;
+    if (!video || !video.duration || fadingRef.current) return;
+    if (video.currentTime / video.duration >= revealAt) {
+      beginCrossfade();
+    }
+  }, [revealAt, beginCrossfade]);
 
   useEffect(
     () => () => {
@@ -160,7 +159,6 @@ export default function Envelope({
 
     setPhase("playing");
 
-    // CRITICAL: play() must stay inside this user-gesture handler
     video.play().catch(() => {
       startGlowFallback();
     });
@@ -186,22 +184,14 @@ export default function Envelope({
     <AnimatePresence>
       <motion.div
         key="envelope-screen"
-        className="fixed inset-0 z-50 overflow-hidden bg-ivory"
+        className="fixed inset-0 z-50 overflow-hidden bg-transparent"
         animate={{
-          backgroundColor:
-            isGlow || isFading
-              ? "rgba(243, 237, 219, 0)"
-              : "rgba(243, 237, 219, 1)",
+          backgroundColor: isClosed
+            ? "rgba(243, 237, 219, 1)"
+            : "rgba(243, 237, 219, 0)",
         }}
         transition={{
-          backgroundColor: {
-            duration: isGlow
-              ? reduced
-                ? ot.reducedDuration
-                : ot.duration * 0.45
-              : VIDEO_FADE_MS / 1000,
-            ease: easeOut,
-          },
+          backgroundColor: { duration: fadeSec * 0.6, ease: easeOut },
         }}
       >
         {showVideoLayer && (
@@ -209,9 +199,8 @@ export default function Envelope({
             className="absolute inset-0 z-10 flex items-center justify-center"
             initial={{ opacity: 1 }}
             animate={{ opacity: isFading ? 0 : 1 }}
-            transition={{ duration: VIDEO_FADE_MS / 1000, ease: easeOut }}
+            transition={{ duration: fadeSec, ease: easeOut }}
           >
-            {/* 9:16 frame — cover patch is positioned relative to this */}
             <div
               className="relative h-full max-h-full w-auto max-w-full"
               style={{ aspectRatio: "9 / 16" }}
@@ -224,6 +213,7 @@ export default function Envelope({
                 preload="auto"
                 onEnded={handleVideoEnded}
                 onError={handleVideoError}
+                onTimeUpdate={handleTimeUpdate}
                 onLoadedData={() => {
                   const v = videoRef.current;
                   if (v && v.paused) {
@@ -237,12 +227,10 @@ export default function Envelope({
                 className="absolute inset-0 h-full w-full object-contain"
                 aria-label="Davetiye açılış videosu"
               />
-              <IntroTextCover />
             </div>
           </motion.div>
         )}
 
-        {/* Our Turkish hint — baked-in English is covered by IntroTextCover */}
         {isClosed && (
           <button
             type="button"

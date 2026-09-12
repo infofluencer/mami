@@ -8,8 +8,8 @@ import GoldDivider from "./GoldDivider";
 import SectionReveal from "./SectionReveal";
 
 /**
- * Hero — arch/swans image with names, scroll hint, cream blend,
- * and a full-width floral strip at the bottom seam into Intro.
+ * Hero — arch/swans image with names, scroll hint, cream blend.
+ * Corner florals load with hero-bg (priority); not during video fade.
  */
 export default function Hero() {
   const { couple, event, texts, assets } = invitationConfig;
@@ -101,12 +101,8 @@ export default function Hero() {
           </SectionReveal>
         </div>
 
-        {/*
-          Top-layer swan-frame florals: left + mirrored right corners,
-          thin bottom bridge at the seam. Spills onto intro card (above z-20).
-        */}
         <div className="pointer-events-none absolute inset-0 z-[50] overflow-visible">
-          <SectionFlorals section="hero" className="z-[50]" />
+          <SectionFlorals section="hero" className="z-[50]" priority />
         </div>
       </div>
     </section>

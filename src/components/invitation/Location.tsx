@@ -20,14 +20,14 @@ export default function Location() {
         </p>
       </SectionReveal>
 
-      <SectionReveal delay={0.1} className="mx-auto mt-8 max-w-[260px]">
-        <div className="relative aspect-square w-full opacity-95">
+      <SectionReveal delay={0.1} className="mx-auto mt-8 max-w-md">
+        <div className="relative aspect-[4/3] w-full overflow-hidden rounded-sm shadow-card">
           <Image
             src={assets.venue}
             alt={venue.name}
             fill
-            className="object-contain"
-            sizes="260px"
+            className="object-cover object-center"
+            sizes="(max-width: 448px) 100vw, 448px"
           />
         </div>
       </SectionReveal>

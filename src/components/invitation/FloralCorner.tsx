@@ -18,9 +18,12 @@ export type FloralSection = keyof FloralLayouts;
 export default function FloralOverlay({
   placement,
   className = "",
+  priority = false,
 }: {
   placement: FloralPlacement;
   className?: string;
+  /** Load with hero-bg (LCP) — no late flash-in */
+  priority?: boolean;
 }) {
   const src = invitationConfig.assets.florals[placement.which];
   const width =
@@ -67,6 +70,7 @@ export default function FloralOverlay({
           ? `${placement.widthPercent}vw`
           : `${width}px`
       }
+      priority={priority}
       unoptimized
       aria-hidden
     />
@@ -77,9 +81,11 @@ export default function FloralOverlay({
 export function SectionFlorals({
   section,
   className = "",
+  priority = false,
 }: {
   section: FloralSection;
   className?: string;
+  priority?: boolean;
 }) {
   const placements = invitationConfig.floralLayouts[section];
   if (!placements?.length) return null;
@@ -90,7 +96,11 @@ export function SectionFlorals({
       aria-hidden
     >
       {placements.map((p, i) => (
-        <FloralOverlay key={`${section}-${p.which}-${i}`} placement={p} />
+        <FloralOverlay
+          key={`${section}-${p.which}-${i}`}
+          placement={p}
+          priority={priority}
+        />
       ))}
     </div>
   );
