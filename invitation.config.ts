@@ -269,7 +269,7 @@ export const invitationConfig: InvitationConfig = {
       {
         which: "left",
         widthPercent: 43,
-        bottom: "-8%",
+        bottom: "0%",
         left: "-2%",
         opacity: 0.98,
         zIndex: 50,
@@ -277,14 +277,33 @@ export const invitationConfig: InvitationConfig = {
       {
         which: "left",
         widthPercent: 43,
-        bottom: "-8%",
+        bottom: "0%",
         right: "-2%",
         transform: "scaleX(-1)",
         opacity: 0.98,
         zIndex: 50,
       },
     ],
-    intro: [],
+    /** Intro torn-paper card — small top-corner florals */
+    intro: [
+      {
+        which: "left",
+        widthPx: 110,
+        top: "-18px",
+        left: "-24px",
+        opacity: 0.96,
+        zIndex: 8,
+      },
+      {
+        which: "left",
+        widthPx: 110,
+        top: "-18px",
+        right: "-24px",
+        transform: "scaleX(-1)",
+        opacity: 0.96,
+        zIndex: 8,
+      },
+    ],
     /** Details card removed from flow */
     details: [],
     /**
