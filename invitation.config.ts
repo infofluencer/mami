@@ -180,7 +180,7 @@ export const invitationConfig: InvitationConfig = {
   event: {
     title: "Nişan Günü",
     dateDisplay: "03.10.26",
-    dateISO: "2026-10-03T14:00:00+03:00",
+    dateISO: "2026-10-03T13:30:00+03:00",
   },
   texts: {
     besmele: "Bismillahirrahmanirrahim",
@@ -225,10 +225,10 @@ export const invitationConfig: InvitationConfig = {
       "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3009.5!2d28.6809313!3d41.0082419!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x14caa1bc341e64b7%3A0x8814f94908fd0c1c!2sLin%20Davet%20Salonu!5e0!3m2!1str!2str!4v1",
   },
   schedule: [
-    { time: "14:00", event: "Karşılama" },
-    { time: "14:30", event: "Söz" },
-    { time: "15:00", event: "İkram" },
-    { time: "15:30", event: "Dans" },
+    { time: "13:30", event: "Karşılama" },
+    { time: "14:00", event: "Söz" },
+    { time: "14:30", event: "İkram" },
+    { time: "15:00", event: "Dans" },
   ],
   assets: {
     introVideo: "/davetiye.mp4",
