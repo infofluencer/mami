@@ -226,10 +226,9 @@ export const invitationConfig: InvitationConfig = {
   },
   schedule: [
     { time: "14:00", event: "Karşılama" },
-    { time: "15:00", event: "Tören" },
-    { time: "16:00", event: "İkram" },
-    { time: "17:00", event: "Yemek" },
-    { time: "18:00", event: "Dans" },
+    { time: "14:30", event: "Söz" },
+    { time: "15:00", event: "İkram" },
+    { time: "15:30", event: "Dans" },
   ],
   assets: {
     introVideo: "/davetiye.mp4",

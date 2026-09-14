@@ -129,6 +129,7 @@ export default function Envelope({
       startGlowFallback();
       return;
     }
+    video.muted = true;
     const playPromise = video.play();
     if (playPromise) {
       playPromise.catch(() => startGlowFallback());
@@ -258,7 +259,7 @@ export default function Envelope({
                 poster={posterSrc}
                 playsInline
                 preload="auto"
-                muted={false}
+                muted
                 onEnded={handleVideoEnded}
                 onError={handleVideoError}
                 onTimeUpdate={handleTimeUpdate}
