@@ -19,8 +19,8 @@ const cormorant = Cormorant_Garamond({
 });
 
 export const metadata: Metadata = {
-  title: "Mami & Betül — Nişan Davetiyesi",
-  description: "Mami & Betül nişan davetiyesi",
+  title: "Muhammet & Betül — Nişan Davetiyesi",
+  description: "Muhammet & Betül nişan davetiyesi",
 };
 
 export const viewport: Viewport = {

@@ -1,4 +1,4 @@
-# Mami & Betül — Nişan Davetiyesi
+# Muhammet & Betül — Nişan Davetiyesi
 
 Lüks, animasyonlu dijital nişan davetiyesi. Next.js 14 (App Router) + TypeScript + Tailwind CSS + Framer Motion.
 

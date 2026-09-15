@@ -1,6 +1,6 @@
 /**
  * ═══════════════════════════════════════════════════════════════
- *  Mami & Betül — Nişan Davetiyesi
+ *  Muhammet & Betül — Nişan Davetiyesi
  *  Tüm düzenlenebilir içerik burada. JSX'te sabit metin yok.
  * ═══════════════════════════════════════════════════════════════
  */
@@ -165,16 +165,20 @@ export interface InvitationConfig {
   floralLayouts: FloralLayouts;
   openTransition: OpenTransitionConfig;
   rsvp: {
-    /** Boş bırakılırsa console.log kullanılır */
+    /** WhatsApp numarası (ülke koduyla, boşluksuz). Örn: 905307703158 */
+    whatsapp: string;
+    /** Önceden doldurulmuş mesaj (opsiyonel) */
+    whatsappMessage: string;
+    /** Boş bırakılırsa console.log kullanılır (form kullanılmıyorsa gerekmez) */
     endpoint: string;
   };
 }
 
 export const invitationConfig: InvitationConfig = {
   couple: {
-    first: "Mami",
+    first: "Muhammet",
     second: "Betül",
-    display: "Mami & Betül",
+    display: "Muhammet & Betül",
     monogram: "M & B",
   },
   event: {
@@ -204,7 +208,7 @@ export const invitationConfig: InvitationConfig = {
     scrollDown: "Aşağı Kaydır",
     openMaps: "Haritada Aç",
     rsvpButton: "LCV",
-    rsvpOpenHint: "Açmak için tıkla",
+    rsvpOpenHint: "Katılmak için tıklayın",
     rsvpThankYou:
       "Teşekkür ederiz! Sizi aramızda görmek için sabırsızlanıyoruz.",
     rsvpNameLabel: "Ad Soyad",
@@ -317,6 +321,8 @@ export const invitationConfig: InvitationConfig = {
     videoFadeSeconds: 2.2,
   },
   rsvp: {
+    whatsapp: "905307703158",
+    whatsappMessage: "Merhaba, nişan davetine katılımımı bildirmek istiyorum.",
     endpoint: "",
   },
 };
